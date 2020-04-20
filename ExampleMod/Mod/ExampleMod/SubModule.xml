@@ -1,0 +1,27 @@
+<Module>
+     <Name value="Example Mod"/>
+     <Id value="ExampleMod"/>
+     <Version value="v1.0.0"/>
+     <SingleplayerModule value="true"/>
+     <MultiplayerModule value="false"/>
+     <DependedModules>
+         <DependedModule Id="Native"/>
+         <DependedModule Id="SandBoxCore"/>
+         <DependedModule Id="Sandbox"/>
+         <DependedModule Id="CustomBattle"/>
+         <DependedModule Id="StoryMode" />
+     </DependedModules>
+     <SubModules>
+         <SubModule>
+             <Name value="ExampleMod"/>
+             <DLLName value="ExampleMod.dll"/>
+             <!-- MySubModule 是将要在教程编程章节创建的类名称 -->
+             <SubModuleClassType value="ExampleMod.MySubModule"/>
+             <Tags>
+                 <Tag key="DedicatedServerType" value="none" />
+                 <Tag key="IsNoRenderModeElement" value="false" />
+             </Tags>
+         </SubModule>
+     </SubModules>
+     <Xmls/>
+ </Module>
