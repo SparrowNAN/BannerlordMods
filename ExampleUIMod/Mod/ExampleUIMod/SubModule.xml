@@ -1,0 +1,10 @@
+<Module>
+    <Name value="Example UI Mod"/>
+    <Id value="ExampleUIMod"/>
+    <Version value="v1.0.0"/>
+    <SingleplayerModule value="true"/>
+    <MultiplayerModule value="false"/>
+    <DependedModules/>
+    <SubModules/>
+    <Xmls/>
+</Module>
