@@ -1,0 +1,28 @@
+<Module>
+     <Name value="VillageTaxRate"/>
+     <Id value="VillageTaxRateMod"/>
+     <Version value="v0.0.1"/>
+     <SingleplayerModule value="true"/>
+     <MultiplayerModule value="false"/>
+     <DependedModules>
+         <DependedModule Id="Native"/>
+         <DependedModule Id="SandBoxCore"/>
+         <DependedModule Id="Sandbox"/>
+         <DependedModule Id="CustomBattle"/>
+         <DependedModule Id="StoryMode" />
+     </DependedModules>
+     <SubModules>
+         <SubModule>
+             <Name value="VillageTaxRate"/>
+             <DLLName value="VillageTaxRate.dll"/>
+             <!-- MySubModule 是将要在教程编程章节创建的类名称 -->
+             <SubModuleClassType value="VillageTaxRate.TaxLoader"/>
+			 <SubModuleClassType value="VillageTaxRate.TaxEvent"/>
+             <Tags>
+                 <Tag key="DedicatedServerType" value="none" />
+                 <Tag key="IsNoRenderModeElement" value="false" />
+             </Tags>
+         </SubModule>
+     </SubModules>
+     <Xmls/>
+ </Module>
