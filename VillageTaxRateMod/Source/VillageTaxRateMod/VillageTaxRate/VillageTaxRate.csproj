@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ArmsDealer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\Users\sparrow\Downloads\Compressed\ArmsDealer\bin\Win64_Shipping_Client\ArmsDealer.dll</HintPath>
+    </Reference>
+    <Reference Include="MBOptionScreen, Version=1.1.15.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\Users\sparrow\Downloads\Compressed\MABB.zjxjxzc.mod\PolicyOverhaul-CN-783-1-11b-1587790854\PolicyOverhaul\bin\Win64_Shipping_Client\MBOptionScreen.dll</HintPath>
+    </Reference>
     <Reference Include="SandBox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord\Modules\SandBox\bin\Win64_Shipping_Client\SandBox.dll</HintPath>
     </Reference>
