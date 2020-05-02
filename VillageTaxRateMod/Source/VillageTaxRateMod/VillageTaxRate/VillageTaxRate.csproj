@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.0.9, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\dll\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="ArmsDealer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\..\..\..\Users\sparrow\Downloads\Compressed\ArmsDealer\bin\Win64_Shipping_Client\ArmsDealer.dll</HintPath>
     </Reference>
@@ -181,6 +184,8 @@
   <ItemGroup>
     <Compile Include="TaxClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VillageRateClanFiefsVM.cs" />
+    <Compile Include="VillageRatePatch.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

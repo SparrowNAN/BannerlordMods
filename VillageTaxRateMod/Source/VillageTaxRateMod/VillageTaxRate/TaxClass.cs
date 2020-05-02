@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HarmonyLib;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 using TaleWorlds.Core;
@@ -9,6 +10,12 @@ namespace VillageTaxRate
 {
     public class TaxLoader : MBSubModuleBase
     {
+        protected override void OnSubModuleLoad()
+        {
+            base.OnSubModuleLoad();
+            var harmony = new Harmony("fun.wangyanan.patch.villagerate");
+            harmony.PatchAll();
+        }
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             if(game.GameType is Campaign) {
