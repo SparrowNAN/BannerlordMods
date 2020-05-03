@@ -1,25 +1,18 @@
-﻿using System.Collections.Concurrent;
-using TaleWorlds.CampaignSystem;
-using TaleWorlds.SaveSystem;
-using VillageTaxRate.calculate;
+﻿using TaleWorlds.SaveSystem;
+using VillageTaxRate.Models;
 
 namespace VillageTaxRate.save
 {
-    public class VillageTaxRateSave
+    public class VillageTaxRateSave:SaveableTypeDefiner
     {
-        // public VillageTaxRateSave() : base(20_05_03_1254)
-        // {
-        // }
+        public VillageTaxRateSave() : base(20_05_03_1254)
+        {
+        }
         
-        // protected override void DefineClassTypes()
-        // {
+        protected override void DefineClassTypes()
+        {
             // The Id's here are local and will be related to the Id passed to the constructor
-            // AddClassDefinition(typeof(VillageTaxRateMemory), 10086);
-        // }
-
-        // protected override void DefineGenericClassDefinitions()
-        // {
-        //     this.ConstructGenericClassDefinition(typeof (ConcurrentDictionary<string, int>));
-        // }
+            this.AddClassDefinition(typeof(VillageModel), 1);
+        }
     }
 }

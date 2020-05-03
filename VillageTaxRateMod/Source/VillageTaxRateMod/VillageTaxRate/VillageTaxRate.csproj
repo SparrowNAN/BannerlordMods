@@ -186,6 +186,7 @@
     <Compile Include="TaxClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VillageHealthLevel.cs" />
+    <Compile Include="VillageModel.cs" />
     <Compile Include="VillageRateClanFiefsVM.cs" />
     <Compile Include="VillageRatePatch.cs" />
     <Compile Include="VillageTaxRateMemory.cs" />

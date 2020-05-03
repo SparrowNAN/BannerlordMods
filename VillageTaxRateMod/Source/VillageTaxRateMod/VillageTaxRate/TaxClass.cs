@@ -6,6 +6,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using VillageTaxRate.calculate;
+using VillageTaxRate.Models;
 
 namespace VillageTaxRate
 {
@@ -14,9 +15,8 @@ namespace VillageTaxRate
     {
         protected override void OnSubModuleLoad()
         {
-            base.OnSubModuleLoad();
-            var harmony = new Harmony("fun.wangyanan.patch.villagerate");
-            harmony.PatchAll();
+            // base.OnSubModuleLoad();
+            // new Harmony("fun.wangyanan.patch.villagerate").PatchAll();
         }
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
@@ -25,6 +25,9 @@ namespace VillageTaxRate
                 CampaignGameStarter campaignStarter = (CampaignGameStarter) gameStarterObject;
                 campaignStarter.AddModel(new TaxModel());
                 campaignStarter.AddModel(new TaxHealthModel());
+                campaignStarter.AddBehavior(new CustomSaveBehavior());
+                base.OnSubModuleLoad();
+                new Harmony("fun.wangyanan.patch.villagerate").PatchAll();
             }
         }
 
@@ -35,6 +38,7 @@ namespace VillageTaxRate
             if (VillageTaxRateMemory._villageRateDictionary != null)
             {
                 VillageTaxRateMemory._villageRateDictionary.Clear();
+                new Harmony("fun.wangyanan.patch.villagerate").UnpatchAll();
             }
         }
     }
@@ -80,4 +84,36 @@ namespace VillageTaxRate
             return change;
         }
     }
+    
+    public class CustomSaveBehavior : CampaignBehaviorBase
+    {
+        private static VillageModel _customDataMap = new VillageModel();
+
+        public override void SyncData(IDataStore dataStore)
+        {
+            dataStore.SyncData("customDataMap", ref _customDataMap);
+        }
+
+        public override void RegisterEvents()
+        {
+            CampaignEvents.OnBeforeSaveEvent.AddNonSerializedListener(this, () =>
+            {
+                VillageModel model = new VillageModel();
+                model.Attributes = VillageTaxRateMemory._villageRateDictionary;
+                _customDataMap = model;
+            });
+            CampaignEvents.OnGameLoadedEvent.AddNonSerializedListener(this, starter =>
+            {
+                if (_customDataMap.Attributes != null)
+                {
+                    if (!_customDataMap.Attributes.IsEmpty())
+                    {
+                        VillageTaxRateMemory._villageRateDictionary = _customDataMap.Attributes;
+                    }   
+                }
+            });
+        }
+    }
+    
+    
 }

@@ -1,15 +1,14 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.SaveSystem;
 using VillageTaxRate.enums;
 
 namespace VillageTaxRate.calculate
 {
     // [SaveableClass(10086)]
-    public static class VillageTaxRateMemory
+    public class VillageTaxRateMemory
     {
-        [SaveableField(10086)]
-        public static ConcurrentDictionary<string, int> _villageRateDictionary = new ConcurrentDictionary<string, int>();
+        // [SaveableField(10086)]
+        public static Dictionary<string, int> _villageRateDictionary = new Dictionary<string, int>();
 
         public static void AddVillageRate(Village village, int reduceRate)
         {
@@ -18,12 +17,21 @@ namespace VillageTaxRate.calculate
 
         public static float GetReduceCoinRate(Village village)
         {
-            return _villageRateDictionary.GetOrAdd(VillageHash(village), 0) / 100f;
+            int rate = 0;
+            if (_villageRateDictionary.ContainsKey(VillageHash(village)))
+            {
+                rate = _villageRateDictionary[VillageHash(village)];
+            }
+            return rate / 100f;
         }
 
         public static float CalculateAddHealthRate(Village village)
         {
-            int reduceRate = _villageRateDictionary.GetOrAdd(VillageHash(village), 0);
+            int reduceRate = 0;
+            if (_villageRateDictionary.ContainsKey(VillageHash(village)))
+            {
+                reduceRate = _villageRateDictionary[VillageHash(village)];
+            }
             float villageRateInfluence = CalculateRateInfluenceCoefficient(reduceRate);
             float healthInfluence = CalculateHealthInfluenceCoefficient(reduceRate, CalculateHealthLevel(village));
             return 1 + villageRateInfluence * healthInfluence;
