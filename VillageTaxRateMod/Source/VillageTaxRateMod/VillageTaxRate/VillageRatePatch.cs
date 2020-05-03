@@ -2,7 +2,6 @@
 using HarmonyLib;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ClanManagement;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ClanManagement.Categories;
-using TaleWorlds.Core;
 using VillageTaxRate.ViewModel;
 
 namespace VillageTaxRate.Patchs
@@ -29,8 +28,8 @@ namespace VillageTaxRate.Patchs
             FileLog.Log("clan field end");
             // clanVm.ClanFiefs = clanFiefsVm;
             FileLog.Log("all end");
-            vm.RefreshValues();
-            vm.RefreshFiefsList();
+            // vm.RefreshValues();
+            // vm.RefreshFiefsList();
             value = vm;
         }
     }

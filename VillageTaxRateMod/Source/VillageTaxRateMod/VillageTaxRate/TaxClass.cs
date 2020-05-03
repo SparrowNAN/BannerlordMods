@@ -5,9 +5,11 @@ using TaleWorlds.CampaignSystem.SandBox.GameComponents;
 using TaleWorlds.Core;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using VillageTaxRate.calculate;
 
 namespace VillageTaxRate
 {
+    
     public class TaxLoader : MBSubModuleBase
     {
         protected override void OnSubModuleLoad()
@@ -23,8 +25,16 @@ namespace VillageTaxRate
                 CampaignGameStarter campaignStarter = (CampaignGameStarter) gameStarterObject;
                 campaignStarter.AddModel(new TaxModel());
                 campaignStarter.AddModel(new TaxHealthModel());
-                
-                //ExampleBehavoir is our custom class which extends CampaignBehaviorBase
+            }
+        }
+
+        public override void OnGameEnd(Game game)
+        {
+            base.OnGameEnd(game);
+            // 清楚缓存的数据
+            if (VillageTaxRateMemory._villageRateDictionary != null)
+            {
+                VillageTaxRateMemory._villageRateDictionary.Clear();
             }
         }
     }
@@ -39,10 +49,10 @@ namespace VillageTaxRate
             // 每个村庄的减免税收计算
             foreach (Village village in clan.Villages)
             {
-                exemptRate += CalculateVillageExemptFromTax(clan, village);
+                var reduce = CalculateVillageExemptFromTax(clan, village);
+                TextObject description = new TextObject($"{village.Name.ToString()} - 赋税减免", (Dictionary<string, TextObject>) null);
+                goldChange.Add((float) -reduce, description);
             }
-            TextObject description = new TextObject("赋税减免", (Dictionary<string, TextObject>) null);
-            goldChange.Add((float) -exemptRate, description);
         }
 
         private float CalculateVillageExemptFromTax(Clan clan, Village village)
@@ -51,30 +61,8 @@ namespace VillageTaxRate
             float tax = baseTax;
             if (clan.Kingdom != null && clan.Kingdom.ActivePolicies.Contains(DefaultPolicies.LandTax))
                 tax = tax * 0.95f;
-            float exemptRate = ExemptLevelRate(village.Hearth);
-            return tax * exemptRate;
-        }
-
-        private float ExemptLevelRate(float health)
-        {
-            if (health <= 100)
-            {
-                return 0.9f;
-            } else if (health <= 200)
-            {
-                return 0.7f;
-            }
-            else if (health <= 500)
-            {
-                return 0.5f;
-            } else if (health <= 1000)
-            {
-                return 0.3f;
-            }
-            else
-            {
-                return 0.0f;
-            }
+            float reduceRate = VillageTaxRateMemory.GetReduceCoinRate(village);
+            return tax * reduceRate;
         }
     }
 
@@ -83,30 +71,13 @@ namespace VillageTaxRate
         public override float CalculateHearthChange(Village village, StatExplainer explanation = null)
         {
             float change = base.CalculateHearthChange(village, explanation);
-            change = change * HealthIncrementRate(village.Hearth);
+            // 户数可能减，这里还没有相关的处理逻辑
+            if (change > 0)
+            {
+                float reduceInfluenceRate = VillageTaxRateMemory.CalculateAddHealthRate(village);
+                change = change * reduceInfluenceRate;
+            }
             return change;
-        }
-        
-        private float HealthIncrementRate(float health)
-        {
-            if (health <= 100)
-            {
-                return 5f;
-            } else if (health <= 200)
-            {
-                return 3f;
-            }
-            else if (health <= 500)
-            {
-                return 2f;
-            } else if (health <= 1000)
-            {
-                return 1.5f;
-            }
-            else
-            {
-                return 1f;
-            }
         }
     }
 }
