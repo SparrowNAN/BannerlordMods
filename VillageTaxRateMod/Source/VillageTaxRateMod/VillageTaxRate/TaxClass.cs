@@ -15,8 +15,8 @@ namespace VillageTaxRate
     {
         protected override void OnSubModuleLoad()
         {
-            // base.OnSubModuleLoad();
-            // new Harmony("fun.wangyanan.patch.villagerate").PatchAll();
+            base.OnSubModuleLoad();
+            new Harmony("fun.wangyanan.patch.villagerate").PatchAll();
         }
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
@@ -27,7 +27,6 @@ namespace VillageTaxRate
                 campaignStarter.AddModel(new TaxHealthModel());
                 campaignStarter.AddBehavior(new CustomSaveBehavior());
                 base.OnSubModuleLoad();
-                new Harmony("fun.wangyanan.patch.villagerate").PatchAll();
             }
         }
 
@@ -38,7 +37,7 @@ namespace VillageTaxRate
             if (VillageTaxRateMemory._villageRateDictionary != null)
             {
                 VillageTaxRateMemory._villageRateDictionary.Clear();
-                new Harmony("fun.wangyanan.patch.villagerate").UnpatchAll();
+                // new Harmony("fun.wangyanan.patch.villagerate").UnpatchAll();
             }
         }
     }

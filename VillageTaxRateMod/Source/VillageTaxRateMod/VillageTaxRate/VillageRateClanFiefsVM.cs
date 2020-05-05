@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.ViewModelCollection.ClanManagement.Categories;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -8,13 +11,75 @@ using VillageTaxRate.Actions;
 
 namespace VillageTaxRate.ViewModel
 {
-    public class ClanFiefsWithVillageRateVM : ClanFiefsVM
-    {
 
+  public class ClanFiefsWithVillageRateVM : ClanFiefsVM
+    {
+      
+    private readonly Clan _faction;
+    
+    private readonly Action _onRefresh;
+      
     public ClanFiefsWithVillageRateVM(Action onRefresh) : base(onRefresh)
     {
-
+      this._onRefresh = onRefresh;
+      this._faction = Hero.MainHero.Clan;
     }
+    
+     private void ExecuteAssignGovernor()
+    {
+      if (this.CurrentSelectedFief == null)
+        return;
+      List<InquiryElement> inquiryElements = new List<InquiryElement>();
+      foreach (Hero hero in this._faction.Heroes.Where<Hero>((Func<Hero, bool>) (h => !h.IsDisabled)).Union<Hero>((IEnumerable<Hero>) this._faction.Companions))
+      {
+        if (hero.IsActive && !hero.IsChild)
+        {
+          if (hero.PartyBelongedToAsPrisoner != null)
+          {
+            string hint = new TextObject("{=knwId8DG}You cannot assign a prisoner as a governor of a settlement", (Dictionary<string, TextObject>) null).ToString();
+            inquiryElements.Add(new InquiryElement((object) hero, hero.Name.ToString(), new ImageIdentifier(CharacterCode.CreateFrom((BasicCharacterObject) hero.CharacterObject)), false, hint));
+          }
+          else if (hero == Hero.MainHero)
+          {
+            string hint = new TextObject("{=uoDuiBZR}You cannot assign yourself as a governor", (Dictionary<string, TextObject>) null).ToString();
+            inquiryElements.Add(new InquiryElement((object) hero, hero.Name.ToString(), new ImageIdentifier(CharacterCode.CreateFrom((BasicCharacterObject) hero.CharacterObject)), false, hint));
+          }
+          else if (hero.PartyBelongedTo != null && hero.PartyBelongedTo.LeaderHero == hero)
+          {
+            string hint = new TextObject("{=pWObBhj5}You cannot assign a party leader as a new governor of a settlement", (Dictionary<string, TextObject>) null).ToString();
+            inquiryElements.Add(new InquiryElement((object) hero, hero.Name.ToString(), new ImageIdentifier(CharacterCode.CreateFrom((BasicCharacterObject) hero.CharacterObject)), false, hint));
+          }
+          else if (hero.GovernorOf != null)
+          {
+            TextObject textObject = new TextObject("{=YbGu9rSH}This character is already the governor of {SETTLEMENT_NAME}", (Dictionary<string, TextObject>) null);
+            textObject.SetTextVariable("SETTLEMENT_NAME", hero.GovernorOf.Name);
+            inquiryElements.Add(new InquiryElement((object) hero, hero.Name.ToString(), new ImageIdentifier(CharacterCode.CreateFrom((BasicCharacterObject) hero.CharacterObject)), false, textObject.ToString()));
+          }
+          else
+            inquiryElements.Add(new InquiryElement((object) hero, hero.Name.ToString(), new ImageIdentifier(CharacterCode.CreateFrom((BasicCharacterObject) hero.CharacterObject))));
+        }
+      }
+      if (inquiryElements.Count > 0)
+      {
+        string title = new TextObject("{=koX9okuG}None", (Dictionary<string, TextObject>) null).ToString();
+        inquiryElements.Add(new InquiryElement((object) null, title, new ImageIdentifier(ImageIdentifierType.Null)));
+        InformationManager.ShowMultiSelectionInquiry(new MultiSelectionInquiryData(new TextObject("{=PAUsUq4Z}Select the Leader of the Settlement", (Dictionary<string, TextObject>) null).ToString(), string.Empty, inquiryElements, true, true, GameTexts.FindText("str_done", (string) null).ToString(), "", new Action<List<InquiryElement>>(this.OnGovernorSelectionOver), new Action<List<InquiryElement>>(this.OnGovernorSelectionOver), ""), false);
+      }
+      else
+        InformationManager.AddQuickInformation(new TextObject("{=JzrodcIR}There is no one available in your clan who can govern this settlement right now.", (Dictionary<string, TextObject>) null), 0, (BasicCharacterObject) null, "");
+    }
+     
+     private void OnGovernorSelectionOver(List<InquiryElement> element)
+     {
+       if (element.Count <= 0)
+         return;
+       ChangeGovernorAction.Apply(this.CurrentSelectedFief.Settlement.Town, (Hero) element[0].Identifier);
+       this.RefreshFiefsList();
+       Action onRefresh = this._onRefresh;
+       if (onRefresh == null)
+         return;
+       onRefresh();
+     }
     
     private void ExecuteChangeVillageRateGovernor()
     {
