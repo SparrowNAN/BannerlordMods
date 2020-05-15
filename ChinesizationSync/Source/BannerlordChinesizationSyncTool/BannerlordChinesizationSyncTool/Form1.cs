@@ -223,5 +223,10 @@ namespace BannerlordChinesizationSyncTool
         {
             Use("ea", ea_list);
         }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

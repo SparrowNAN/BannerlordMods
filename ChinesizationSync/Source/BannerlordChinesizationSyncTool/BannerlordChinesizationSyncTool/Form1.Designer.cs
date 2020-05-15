@@ -43,6 +43,7 @@
             this.ea_list = new System.Windows.Forms.ListBox();
             this.public_list = new System.Windows.Forms.ListBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.bel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -188,11 +189,25 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // bel
+            // 
+            this.bel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.bel.Font = new System.Drawing.Font("微软雅黑", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte) (134)));
+            this.bel.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.bel.Location = new System.Drawing.Point(62, 16);
+            this.bel.Name = "bel";
+            this.bel.Size = new System.Drawing.Size(1050, 40);
+            this.bel.TabIndex = 19;
+            this.bel.Text = "向不计酬劳，任劳任怨的霸主汉化组全体成员致敬";
+            this.bel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.bel.Click += new System.EventHandler(this.label4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1183, 789);
+            this.Controls.Add(this.bel);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.public_list);
             this.Controls.Add(this.ea_list);
@@ -215,6 +230,7 @@
             this.PerformLayout();
         }
 
+        private System.Windows.Forms.Label bel;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
