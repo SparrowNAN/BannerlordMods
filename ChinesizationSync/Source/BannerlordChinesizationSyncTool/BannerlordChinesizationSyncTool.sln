@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BannerlordChinesizationSyncTool", "BannerlordChinesizationSyncTool\BannerlordChinesizationSyncTool.csproj", "{FBA876DE-FC59-4D81-933C-1A2DB0B4CAB4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FBA876DE-FC59-4D81-933C-1A2DB0B4CAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBA876DE-FC59-4D81-933C-1A2DB0B4CAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBA876DE-FC59-4D81-933C-1A2DB0B4CAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBA876DE-FC59-4D81-933C-1A2DB0B4CAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
