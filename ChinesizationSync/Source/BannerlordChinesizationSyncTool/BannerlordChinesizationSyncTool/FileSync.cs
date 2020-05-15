@@ -68,13 +68,14 @@ namespace BannerlordChinesizationSyncTool.file
             }
         }
 
-        public static void DeserializationVersionFile()
+        public static VersionInfo DeserializationVersionFile()
         {
             string jsonString = ReadVersionFile();
             VersionInfo versionInfo = JsonConvert.DeserializeObject<VersionInfo>(jsonString);
             versionInfo.publicVersions.Sort((x , y) => -x.sort.CompareTo(y.sort));
             versionInfo.eaVersions.Sort((x , y) => -x.sort.CompareTo(y.sort));
-            VERSION_INFO = versionInfo;
+            return versionInfo;
+            // VERSION_INFO = versionInfo;
         }
 
         public static void BackVersionFile(FileInfo versionFile)
@@ -101,11 +102,12 @@ namespace BannerlordChinesizationSyncTool.file
             }
             else
             {
-                DeserializationVersionFile();
+                VersionInfo versionInfo = DeserializationVersionFile();
+                VERSION_INFO = versionInfo;
             }
         }
 
-        private static void DownloadVersionFile(FileInfo versionFileInfo)
+        private static bool DownloadVersionFile(FileInfo versionFileInfo)
         {
             if (versionFileInfo.Exists)
             {
@@ -115,19 +117,25 @@ namespace BannerlordChinesizationSyncTool.file
             try
             {
                 webClient.DownloadFile(VERSION_URL, VERSION_FILE_PATH);
-                DeserializationVersionFile();
             }
             catch (Exception e)
             {
                 MessageBox.Show("下载版本文件出错，异常信息:" + e.Message, "错误提示");
-                throw;
+                return false;
             }
+
+            return true;
         }
         
-        public static void DownloadVersionFile()
+        public static VersionInfo DownloadVersionFile()
         {
             FileInfo fileInfo = new FileInfo(VERSION_FILE_PATH);
-            DownloadVersionFile(fileInfo);
+            if (!DownloadVersionFile(fileInfo))
+            {
+                return null;
+            }
+            VersionInfo info = DeserializationVersionFile();
+            return info;
         }
 
         public static void CreateDir()

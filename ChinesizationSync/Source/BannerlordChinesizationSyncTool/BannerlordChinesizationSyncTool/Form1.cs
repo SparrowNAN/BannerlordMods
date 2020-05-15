@@ -26,6 +26,8 @@ namespace BannerlordChinesizationSyncTool
 
         private void ListBoxAddItem(ListBox checkedListBox, List<Version> versions)
         {
+            // BindingSource bs = new BindingSource();
+            // bs.DataSource = versions;
             checkedListBox.DataSource = versions;
             checkedListBox.DisplayMember = "version";   //要显示的属性名
             checkedListBox.ValueMember = "path"; //存储的属性名
@@ -97,9 +99,60 @@ namespace BannerlordChinesizationSyncTool
 
         private void button1_Click(object sender, EventArgs e)
         {
+            VersionInfo info = FileSync.DownloadVersionFile();
             // 点击更新版本文件的时候，更新版本
-            FileSync.DownloadVersionFile();
-            MessageBox.Show("已经获取最新的版本信息");
+            if (info == null)
+            {
+                MessageBox.Show("文件格式错误，请到论坛相应的帖子或者Github上反馈");
+            }
+            else
+            {
+                updateSource(public_list, info.publicVersions);
+                updateSource(ea_list, info.eaVersions);
+                MessageBox.Show("已经获取最新的版本信息");
+            }
+        }
+
+        private void updateSource(ListBox listBox, List<Version> versions)
+        {
+            listBox.DataSource = null;
+            listBox.DataSource = versions;
+            listBox.DisplayMember = "version";   //要显示的属性名
+            listBox.ValueMember = "path"; //存储的属性名
+        }
+
+        private void compareVersions(List<Version> publicVersions, List<Version> newVersions)
+        {
+            // 更新已经有的，删除已经没有的
+            Dictionary<string, Version> newDictionary = new Dictionary<string, Version>();
+            foreach (var newVersion in newVersions)
+            {
+                newDictionary.Add(newVersion.version, newVersion);
+            }
+            List<Version> needRemove = new List<Version>();
+            foreach (var publicVersion in publicVersions)
+            {
+                Version version = newDictionary[publicVersion.version];
+                if (version != null)
+                {
+                    publicVersion.path = version.path;
+                    publicVersion.sort = version.sort;
+                    publicVersion.desc = version.desc;
+                    newDictionary.Remove(version.version);
+                }
+                else
+                {
+                    needRemove.Add(publicVersion);
+                }
+            }
+            publicVersions.RemoveAll(needRemove.Contains);
+            // 增加没有的
+            foreach (var version in newDictionary)
+            {
+                publicVersions.Add(version.Value);
+            }
+            // 重新排序
+            publicVersions.Sort((x , y) => -x.sort.CompareTo(y.sort));
         }
 
         /**
