@@ -15,7 +15,7 @@ namespace BannerlordChinesizationSyncTool
             // 创建、检查相关文件夹
             FileSync.CreateDir();
             // check,备份,download version.json文件
-            FileSync.CheckVersionFile();
+            // FileSync.CheckVersionFile();
             
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

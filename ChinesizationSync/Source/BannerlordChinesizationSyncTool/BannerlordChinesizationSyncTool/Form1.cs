@@ -35,6 +35,8 @@ namespace BannerlordChinesizationSyncTool
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            FileSync.CreateDir();
+            FileSync.CheckVersionFile();
             ListBoxAddItem(public_list, FileSync.VERSION_INFO.publicVersions);
             ListBoxAddItem(ea_list, FileSync.VERSION_INFO.eaVersions);
         }

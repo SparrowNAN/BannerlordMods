@@ -100,11 +100,8 @@ namespace BannerlordChinesizationSyncTool.file
                 BackVersionFile(versionFileInfo);
                 DownloadVersionFile(versionFileInfo);
             }
-            else
-            {
-                VersionInfo versionInfo = DeserializationVersionFile();
-                VERSION_INFO = versionInfo;
-            }
+            VersionInfo versionInfo = DeserializationVersionFile();
+            VERSION_INFO = versionInfo;
         }
 
         private static bool DownloadVersionFile(FileInfo versionFileInfo)
