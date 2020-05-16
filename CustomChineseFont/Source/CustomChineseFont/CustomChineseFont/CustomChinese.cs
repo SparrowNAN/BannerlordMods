@@ -6,17 +6,17 @@ using TaleWorlds.Library;
 using HarmonyLib;
 using TaleWorlds.Core;
 
-namespace SettlementExtend
+namespace CustomChineseFont
 {
-    public class ExtendMain : MBSubModuleBase
+    public class CustomChinese : MBSubModuleBase
     {
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
-            Harmony harmony = new Harmony("fun.wangyanan.patch.fonts");
+            Harmony harmony = new Harmony("fun.wangyanan.patch.custom.chinese.fonts");
             if (harmony.GetPatchedMethods().IsEmpty())
             {
-                new Harmony("fun.wangyanan.patch.fonts").PatchAll();
+                new Harmony("fun.wangyanan.patch.custom.chinese.fonts").PatchAll();
                 enableFont();
             }
         }
@@ -32,17 +32,16 @@ namespace SettlementExtend
             {
                 SheetID = 1
             };
-            string currentModulePath = ModuleInfo.GetPath("SettlementExtend");
+            string currentModulePath = ModuleInfo.GetPath("CustomChineseFont");
             string currentModuleDirPath = currentModulePath.Substring(0, currentModulePath.LastIndexOf("/"));
             string fontPath = currentModuleDirPath + "/GUI/GauntletUI/Fonts";
             string fontFilePath = fontPath + "/simkai/";
             UIResourceManager.FontFactory.AddFontDefinition(fontFilePath, "simkai2", UIResourceManager.SpriteData);
             Font font = UIResourceManager.FontFactory.GetFont("simkai2");
             font.GetType().GetProperty("FontSprite").SetValue((object) font, (object) spritePart);
-            TaleWorlds.Engine.Texture engineTexture = TaleWorlds.Engine.Texture.LoadTextureFromPath("Galahad.png", fontPath);
+            TaleWorlds.Engine.Texture engineTexture = TaleWorlds.Engine.Texture.LoadTextureFromPath("simkai2.png", fontPath);
             font.FontSprite.Category.SpriteSheets[font.FontSprite.SheetID - 1] = new Texture(new EngineTexture(engineTexture));
             UIResourceManager.FontFactory.DefaultFont = font;
         }
-        
     }
 }
